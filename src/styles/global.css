@@ -236,6 +236,49 @@ header nav > a {
 header nav strong {
   font-weight: 600;
 }
+.desktop-services-button {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .6rem .72rem;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: color-mix(in srgb, var(--color-text) 80%, transparent);
+  cursor: pointer;
+  font-size: .875rem;
+  font-weight: 500;
+  letter-spacing: .1em;
+  line-height: 1;
+  text-transform: uppercase;
+  transition: background .2s ease, color .2s ease;
+}
+.desktop-services-button:hover,
+.desktop-services-button[aria-expanded="true"] {
+  background: var(--color-violet-soft);
+  color: var(--color-primary);
+}
+.desktop-services-chevron {
+  transition: transform .2s ease;
+}
+.desktop-services-button[aria-expanded="true"] .desktop-services-chevron {
+  transform: rotate(180deg);
+}
+.desktop-services-dropdown {
+  position: fixed;
+  top: 76px;
+  left: 50%;
+  z-index: 55;
+  width: min(1000px, calc(100vw - 32px));
+  max-width: calc(100vw - 32px);
+  opacity: 0;
+  transform: translate(-50%, .5rem);
+  transition: opacity .2s ease, transform .2s ease;
+}
+.desktop-services-dropdown.is-open {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
 label {
   color: var(--color-text);
   font-weight: 500;

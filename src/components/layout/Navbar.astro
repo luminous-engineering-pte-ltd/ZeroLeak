@@ -9,9 +9,14 @@ import { navItems, services } from '../../data/services';
     </a>
     <div class="hidden items-center gap-8 lg:flex">
       {navItems.map(([label, href]) => label === 'Services' ? (
-        <div class="group">
-          <a href={href} class="py-7 text-sm font-bold uppercase tracking-[.12em] text-main/80 hover:text-primary" aria-haspopup="true">Services</a>
-          <div class="invisible absolute left-1/2 top-[76px] w-[min(1120px,calc(100vw-32px))] -translate-x-1/2 translate-y-2 border border-line bg-white p-6 opacity-0 shadow-premium transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+        <div data-desktop-services>
+          <button type="button" class="desktop-services-button" data-desktop-services-button aria-haspopup="true" aria-expanded="false" aria-controls="desktop-services-menu">
+            <span>Services</span>
+            <svg aria-hidden="true" class="desktop-services-chevron h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m6 9 6 6 6-6"></path>
+            </svg>
+          </button>
+          <div id="desktop-services-menu" hidden class="desktop-services-dropdown border border-line bg-white p-6 shadow-premium">
             <div class="grid max-h-[74vh] grid-cols-3 gap-4 overflow-auto">
               {services.map((service) => (
                 <div class="border border-line p-4 transition hover:bg-soft">
@@ -79,4 +84,47 @@ import { navItems, services } from '../../data/services';
       <a href="/contact" class="btn btn-primary mt-4 w-full">Get Quote</a>
     </div>
   </div>
+  <script>
+    const servicesRoot = document.querySelector('[data-desktop-services]');
+    const servicesButton = document.querySelector('[data-desktop-services-button]');
+    const servicesDropdown = document.getElementById('desktop-services-menu');
+
+    if (servicesRoot && servicesButton && servicesDropdown) {
+      const closeServicesDropdown = () => {
+        servicesButton.setAttribute('aria-expanded', 'false');
+        servicesDropdown.classList.remove('is-open');
+        servicesDropdown.addEventListener('transitionend', () => {
+          if (!servicesDropdown.classList.contains('is-open')) servicesDropdown.hidden = true;
+        }, { once: true });
+      };
+
+      const openServicesDropdown = () => {
+        servicesDropdown.hidden = false;
+        servicesButton.setAttribute('aria-expanded', 'true');
+        requestAnimationFrame(() => servicesDropdown.classList.add('is-open'));
+      };
+
+      servicesButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const expanded = servicesButton.getAttribute('aria-expanded') === 'true';
+        expanded ? closeServicesDropdown() : openServicesDropdown();
+      });
+
+      document.addEventListener('click', (event) => {
+        if (
+          servicesButton.getAttribute('aria-expanded') === 'true' &&
+          !servicesRoot.contains(event.target)
+        ) {
+          closeServicesDropdown();
+        }
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && servicesButton.getAttribute('aria-expanded') === 'true') {
+          closeServicesDropdown();
+          servicesButton.focus();
+        }
+      });
+    }
+  </script>
 </header>
