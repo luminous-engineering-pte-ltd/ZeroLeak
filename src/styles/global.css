@@ -103,6 +103,101 @@ button, input, select, textarea { font: inherit; }
   opacity: 1;
   transform: translate(-50%, 0);
 }
+.mobile-icon-button {
+  display: inline-flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-primary);
+  border-radius: 4px;
+  background: rgba(255,255,255,.74);
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: background .2s ease, border-color .2s ease, color .2s ease, transform .2s ease;
+}
+.mobile-icon-button:hover {
+  border-color: var(--color-primary-hover);
+  background: var(--color-violet-soft);
+  color: var(--color-primary-hover);
+  transform: translateY(-1px);
+}
+.mobile-collapsible {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height .24s ease, opacity .2s ease;
+}
+.mobile-collapsible.is-open {
+  max-height: 80vh;
+  opacity: 1;
+}
+.mobile-menu-panel.is-open {
+  max-height: calc(100vh - 76px);
+  overflow-y: auto;
+}
+.mobile-nav-row {
+  display: flex;
+  width: 100%;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  padding: .8rem 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+  font-weight: 800;
+  text-align: left;
+  transition: color .2s ease, background .2s ease;
+}
+.mobile-nav-row:hover {
+  color: var(--color-primary);
+}
+.mobile-service-link {
+  display: flex;
+  min-height: 46px;
+  flex: 1;
+  align-items: center;
+  color: var(--color-primary);
+  font-weight: 800;
+}
+.mobile-chevron-button {
+  display: inline-flex;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-white);
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: background .2s ease, border-color .2s ease, color .2s ease;
+}
+.mobile-chevron-button:hover {
+  border-color: var(--color-primary-hover);
+  background: var(--color-violet-soft);
+  color: var(--color-primary-hover);
+}
+.mobile-chevron {
+  transition: transform .2s ease;
+}
+[data-mobile-toggle][aria-expanded="true"] .mobile-chevron {
+  transform: rotate(180deg);
+}
+.mobile-subservice-link {
+  display: block;
+  padding: .45rem 0;
+  color: var(--color-muted);
+  font-size: .92rem;
+  transition: color .2s ease;
+}
+.mobile-subservice-link:hover {
+  color: var(--color-primary);
+}
 .panel {
   border: 1px solid var(--color-border);
   background: rgba(255,255,255,.86);

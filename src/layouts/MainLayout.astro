@@ -39,9 +39,27 @@ const canonicalUrl = new URL(canonical, site.url).toString();
       document.querySelectorAll('[data-accordion]').forEach((button) => {
         button.addEventListener('click', () => {
           const panel = document.getElementById(button.getAttribute('aria-controls'));
+          if (!panel) return;
           const expanded = button.getAttribute('aria-expanded') === 'true';
           button.setAttribute('aria-expanded', String(!expanded));
           panel.hidden = expanded;
+        });
+      });
+      document.querySelectorAll('[data-mobile-toggle]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const panel = document.getElementById(button.getAttribute('aria-controls'));
+          if (!panel) return;
+          const expanded = button.getAttribute('aria-expanded') === 'true';
+          button.setAttribute('aria-expanded', String(!expanded));
+          if (expanded) {
+            panel.classList.remove('is-open');
+            panel.addEventListener('transitionend', () => {
+              if (!panel.classList.contains('is-open')) panel.hidden = true;
+            }, { once: true });
+          } else {
+            panel.hidden = false;
+            requestAnimationFrame(() => panel.classList.add('is-open'));
+          }
         });
       });
       const form = document.querySelector('[data-quote-form]');

@@ -37,26 +37,45 @@ import { navItems, services } from '../../data/services';
       </a>
       <a href="/contact" class="btn btn-primary">Get Quote</a>
     </div>
-    <button class="lg:hidden btn btn-outline px-3" data-accordion aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">Menu</button>
+    <button class="mobile-icon-button lg:hidden" data-mobile-toggle aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+      <svg aria-hidden="true" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M4 6h16"></path>
+        <path d="M4 12h16"></path>
+        <path d="M4 18h16"></path>
+      </svg>
+    </button>
   </nav>
-  <div id="mobile-menu" hidden class="border-t border-line bg-white lg:hidden">
-    <div class="container-premium py-4">
+  <div id="mobile-menu" hidden class="mobile-collapsible mobile-menu-panel border-t border-line bg-white lg:hidden">
+    <div class="container-premium py-3">
       {navItems.map(([label, href]) => label === 'Services' ? (
-        <div class="border-b border-line py-2">
-          <button class="flex w-full items-center justify-between py-3 font-bold text-main" data-accordion aria-expanded="false" aria-controls="mobile-services">Services <span>+</span></button>
-          <div id="mobile-services" hidden class="pb-3">
+        <div class="border-b border-line py-1">
+          <button class="mobile-nav-row" data-mobile-toggle aria-expanded="false" aria-controls="mobile-services">
+            <span>Services</span>
+            <svg aria-hidden="true" class="mobile-chevron h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m6 9 6 6 6-6"></path>
+            </svg>
+          </button>
+          <div id="mobile-services" hidden class="mobile-collapsible pb-2">
             {services.map((service) => (
-              <details class="border-t border-line py-2">
-                <summary class="cursor-pointer font-bold text-primary">{service.number}. {service.name}</summary>
-                <div class="grid gap-1 py-2 pl-4">
-                  <a href={`/services/${service.slug}`} class="py-1 text-sm font-bold">Overview</a>
-                  {service.subServices.map((sub) => <a href={`/services/${service.slug}/${sub.slug}`} class="py-1 text-sm text-muted">{sub.name}</a>)}
+              <div class="border-t border-line">
+                <div class="flex items-center gap-2">
+                  <a href={`/services/${service.slug}`} class="mobile-service-link">{service.name}</a>
+                  <button class="mobile-chevron-button" data-mobile-toggle aria-expanded="false" aria-controls={`mobile-service-${service.slug}`} aria-label={`Toggle ${service.name} services`}>
+                    <svg aria-hidden="true" class="mobile-chevron h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="m6 9 6 6 6-6"></path>
+                    </svg>
+                  </button>
                 </div>
-              </details>
+                <div id={`mobile-service-${service.slug}`} hidden class="mobile-collapsible">
+                  <div class="grid gap-1 pb-3 pl-4">
+                    {service.subServices.map((sub) => <a href={`/services/${service.slug}/${sub.slug}`} class="mobile-subservice-link">{sub.name}</a>)}
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         </div>
-      ) : <a href={href} class="block border-b border-line py-4 font-bold text-main">{label}</a>)}
+      ) : <a href={href} class="mobile-nav-row border-b border-line">{label}</a>)}
       <a href="/contact" class="btn btn-primary mt-4 w-full">Get Quote</a>
     </div>
   </div>
