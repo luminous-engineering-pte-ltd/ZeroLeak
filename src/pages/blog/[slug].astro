@@ -1,0 +1,33 @@
+---
+import { getCollection, render } from 'astro:content';
+import MainLayout from '../../layouts/MainLayout.astro';
+import Breadcrumbs from '../../components/ui/Breadcrumbs.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({ params: { slug: post.slug ?? post.id.replace(/\.md$/, '') }, props: { post } }));
+}
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const allPosts = await getCollection('blog');
+const entryPath = (entry) => `/blog/${entry.slug ?? entry.id.replace(/\.md$/, '')}`;
+const related = allPosts.filter((item) => item.id !== post.id && item.data.category === post.data.category).slice(0, 3);
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.date.toISOString(),
+  author: { '@type': 'Organization', name: post.data.author },
+  image: post.data.image
+};
+---
+<MainLayout title={`${post.data.title} | ZeroLeak`} description={post.data.description} canonical={entryPath(post)} image={post.data.image} jsonLd={jsonLd}>
+  <article>
+    <section class="bg-soft py-12 md:py-20"><div class="container-premium"><Breadcrumbs items={[{ label: 'Blog', href: '/blog' }, { label: post.data.title, href: entryPath(post) }]} /><div class="mt-10 max-w-4xl"><div class="eyebrow">{post.data.category}</div><h1 class="display mt-4 text-5xl font-bold text-main md:text-6xl">{post.data.title}</h1><p class="mt-5 text-muted">{post.data.date.toLocaleDateString('en-SG', { year: 'numeric', month: 'long', day: 'numeric' })} · {post.data.author}</p></div></div></section>
+    <img src={post.data.image} alt={post.data.title} class="h-[360px] w-full object-cover md:h-[520px]" />
+    <section class="section bg-white"><div class="container-premium grid gap-10 lg:grid-cols-[240px_minmax(0,760px)]"><aside class="hidden lg:block"><div class="sticky top-28 border-l border-primary-hover pl-4"><h2 class="font-bold text-main">Contents</h2>{headings.filter((h) => h.depth === 2).map((h) => <a href={`#${h.slug}`} class="mt-3 block text-sm text-muted hover:text-primary">{h.text}</a>)}</div></aside><div class="prose prose-neutral max-w-none prose-headings:font-display prose-headings:text-main prose-a:text-primary"><Content /></div></div></section>
+  </article>
+  <section class="section bg-lavender"><div class="container-premium"><div class="eyebrow">Related Articles</div><div class="mt-8 grid gap-4 md:grid-cols-3">{related.map((item) => <a href={entryPath(item)} class="panel block p-6"><h2 class="display text-2xl text-main">{item.data.title}</h2><p class="mt-3 text-muted">{item.data.description}</p></a>)}</div></div></section>
+  <section class="section bg-primary-dark text-white"><div class="container-premium text-center"><h2 class="display text-4xl">Need advice for your property?</h2><div class="mt-7 flex justify-center gap-3 flex-wrap"><a href="/contact" class="btn btn-light">Request a Quote</a><a href="https://wa.me/6581836772" class="btn border-white/25 text-white">WhatsApp ZeroLeak</a></div></div></section>
+</MainLayout>

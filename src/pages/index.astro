@@ -1,0 +1,20 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Hero from '../components/home/Hero.astro';
+import Sections from '../components/home/Sections.astro';
+import { site } from '../data/site';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'ZeroLeak',
+  url: site.url,
+  telephone: site.phone,
+  areaServed: 'Singapore',
+  description: site.description
+};
+---
+<MainLayout title="ZeroLeak Singapore | Waterproofing, Roofing & Structural Repair" description="Professional waterproofing, roofing, water leakage, grouting, concrete repair and structural protection solutions in Singapore." jsonLd={jsonLd}>
+  <Hero />
+  <Sections />
+</MainLayout>

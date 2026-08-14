@@ -1,0 +1,33 @@
+---
+import MainLayout from '../../../layouts/MainLayout.astro';
+import Breadcrumbs from '../../../components/ui/Breadcrumbs.astro';
+import { services } from '../../../data/services';
+
+export function getStaticPaths() {
+  return services.map((service) => ({ params: { service: service.slug }, props: { service } }));
+}
+const { service } = Astro.props;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: `${service.name} Singapore`,
+  provider: { '@type': 'LocalBusiness', name: 'ZeroLeak' },
+  areaServed: 'Singapore',
+  description: service.description
+};
+---
+<MainLayout title={`${service.name} Singapore | ZeroLeak`} description={service.description} canonical={`/services/${service.slug}`} image={service.image} jsonLd={jsonLd}>
+  <section class="bg-soft py-12 md:py-20">
+    <div class="container-premium">
+      <Breadcrumbs items={[{ label: 'Services', href: '/services' }, { label: service.name, href: `/services/${service.slug}` }]} />
+      <div class="mt-10 grid items-end gap-10 lg:grid-cols-[.9fr_1.1fr]">
+        <div><div class="eyebrow">Service {service.number}</div><h1 class="display mt-4 text-5xl font-bold text-main md:text-6xl">{service.name} Singapore</h1><p class="mt-6 text-lg leading-8 text-muted">{service.description}</p><a href="/contact" class="btn btn-primary mt-8">Request a Quote</a></div>
+        <img class="aspect-[5/3] w-full object-cover shadow-premium" src={service.image} alt={`${service.name} service for Singapore buildings`} width="1000" height="600" />
+      </div>
+    </div>
+  </section>
+  <section class="section bg-white"><div class="container-premium grid gap-10 lg:grid-cols-[.7fr_1.3fr]"><div><div class="eyebrow">Sub-Services</div><h2 class="display mt-3 text-4xl font-bold text-main">Focused {service.name.toLowerCase()} support.</h2></div><div class="grid gap-3 sm:grid-cols-2">{service.subServices.map((sub) => <a class="border border-line p-5 hover:border-primary-hover" href={`/services/${service.slug}/${sub.slug}`}><h3 class="font-bold text-main">{sub.name}</h3><p class="mt-2 text-sm text-muted">{sub.description}</p></a>)}</div></div></section>
+  <section class="section bg-lavender"><div class="container-premium grid gap-8 md:grid-cols-3"><div><h2 class="display text-3xl text-main">Benefits</h2>{service.benefits.map((b) => <p class="mt-4 border-t border-primary-hover/40 pt-4 text-muted">{b}</p>)}</div><div><h2 class="display text-3xl text-main">Applications</h2>{service.applications.map((a) => <p class="mt-4 border-t border-primary-hover/40 pt-4 text-muted">{a}</p>)}</div><div><h2 class="display text-3xl text-main">Process</h2>{service.process.map((p, i) => <p class="mt-4 border-t border-primary-hover/40 pt-4 text-muted">0{i + 1}. {p}</p>)}</div></div></section>
+  <section class="section bg-soft"><div class="container-premium grid gap-10 lg:grid-cols-2"><div><div class="eyebrow">FAQ</div><h2 class="display mt-3 text-4xl text-main">Questions about {service.name.toLowerCase()}.</h2></div><div class="grid gap-3">{service.faqs.map(([q,a], i) => <div class="border border-line bg-white"><button class="flex w-full justify-between p-5 text-left font-bold" data-accordion aria-expanded="false" aria-controls={`service-faq-${i}`}>{q}<span>+</span></button><p id={`service-faq-${i}`} hidden class="px-5 pb-5 text-muted">{a}</p></div>)}</div></div></section>
+  <section class="section bg-primary-dark text-white"><div class="container-premium text-center"><h2 class="display text-4xl">Need {service.name.toLowerCase()} advice?</h2><p class="mx-auto mt-4 max-w-2xl text-white/70">Share the issue with ZeroLeak and receive a practical recommendation for your property.</p><a href="/contact" class="btn btn-light mt-7">Get a Free Quote</a></div></section>
+</MainLayout>

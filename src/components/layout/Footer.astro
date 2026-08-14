@@ -1,0 +1,17 @@
+---
+import { navItems, services } from '../../data/services';
+import { site } from '../../data/site';
+---
+<footer class="bg-primary-dark text-white">
+  <div class="container-premium grid gap-10 py-14 md:grid-cols-[1.4fr_.8fr_.8fr_.8fr]">
+    <div>
+      <div class="font-display text-3xl font-bold">ZeroLeak</div>
+      <p class="mt-4 max-w-sm text-white/70">{site.description}</p>
+      <a href="/contact" class="btn btn-light mt-6">Request a Free Quote</a>
+    </div>
+    <div><h2 class="font-bold text-lavender">Quick Links</h2><div class="mt-4 grid gap-2">{navItems.map(([l,h]) => <a href={h} class="text-white/70 hover:text-white">{l}</a>)}</div></div>
+    <div><h2 class="font-bold text-lavender">Services</h2><div class="mt-4 grid gap-2">{services.slice(0,6).map((s) => <a href={`/services/${s.slug}`} class="text-white/70 hover:text-white">{s.name}</a>)}</div></div>
+    <div><h2 class="font-bold text-lavender">Contact</h2><p class="mt-4 text-white/70">{site.phone}</p><p class="mt-2 text-white/70">{site.domain}</p></div>
+  </div>
+  <div class="border-t border-white/10 py-5 text-center text-sm text-white/55">&copy; {new Date().getFullYear()} ZeroLeak Singapore. All rights reserved.</div>
+</footer>

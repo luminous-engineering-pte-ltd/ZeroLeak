@@ -1,0 +1,12 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '../../layouts/MainLayout.astro';
+import Breadcrumbs from '../../components/ui/Breadcrumbs.astro';
+import { categories } from '../../data/blog';
+const posts = (await getCollection('blog')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const postPath = (post) => `/blog/${post.slug ?? post.id.replace(/\.md$/, '')}`;
+---
+<MainLayout title="Blog | ZeroLeak Singapore" description="Practical waterproofing, roofing, leak detection, concrete repair and structural maintenance articles from ZeroLeak Singapore.">
+  <section class="section bg-soft"><div class="container-premium"><Breadcrumbs items={[{ label: 'Blog', href: '/blog' }]} /><div class="mt-10 max-w-4xl"><div class="eyebrow">Editorial Blog</div><h1 class="display mt-4 text-5xl font-bold text-main md:text-6xl">Practical Building Protection Notes</h1><p class="mt-6 text-lg leading-8 text-muted">Realistic guidance for waterproofing, roofing, leak detection, concrete repair and structural maintenance in Singapore properties.</p></div><div class="mt-8 flex flex-wrap gap-2">{categories.map((cat) => <span class="border border-line bg-lavender px-3 py-1 text-sm font-bold text-primary">{cat}</span>)}</div></div></section>
+  <section class="section bg-white"><div class="container-premium grid gap-6 md:grid-cols-3">{posts.map((post) => <article class="panel overflow-hidden"><img src={post.data.image} alt={post.data.title} class="aspect-[4/3] w-full object-cover" loading="lazy" /><div class="p-6"><div class="text-xs font-black uppercase tracking-[.14em] text-primary">{post.data.category} · {post.data.date.toLocaleDateString('en-SG', { year: 'numeric', month: 'short', day: 'numeric' })}</div><h2 class="display mt-4 text-2xl font-bold text-main">{post.data.title}</h2><p class="mt-3 text-muted">{post.data.description}</p><a href={postPath(post)} class="mt-6 inline-block font-bold text-primary">Read Article →</a></div></article>)}</div></section>
+</MainLayout>
