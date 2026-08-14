@@ -60,6 +60,49 @@ button, input, select, textarea { font: inherit; }
 .btn-light:hover { background: var(--color-violet-light); border-color: var(--color-violet-light); }
 .btn-outline { color: var(--color-primary); border-color: var(--color-primary); background: rgba(255,255,255,.74); }
 .btn-outline:hover { background: var(--color-violet-soft); border-color: var(--color-primary-hover); }
+.desktop-call-link {
+  position: relative;
+  display: inline-flex;
+  width: 42px;
+  height: 42px;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+  background: transparent;
+  border-radius: 4px;
+  transition: background .2s ease, color .2s ease, transform .2s ease;
+}
+.desktop-call-link:hover {
+  color: var(--color-primary-hover);
+  background: var(--color-violet-soft);
+  transform: translateY(-1px);
+}
+.desktop-call-link::after {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  z-index: 60;
+  width: max-content;
+  max-width: 160px;
+  padding: .4rem .55rem;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-white);
+  box-shadow: 0 12px 34px rgba(91,33,182,.12);
+  color: var(--color-text);
+  content: attr(data-tooltip);
+  font-size: .78rem;
+  font-weight: 800;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -4px);
+  transition: opacity .18s ease, transform .18s ease;
+}
+.desktop-call-link:hover::after,
+.desktop-call-link:focus-visible::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
 .panel {
   border: 1px solid var(--color-border);
   background: rgba(255,255,255,.86);
